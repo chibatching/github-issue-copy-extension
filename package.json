@@ -1,0 +1,69 @@
+{
+  "name": "github_issue_copy_extension",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Copy github issue to another repository",
+  "scripts": {
+    "start": "npm run dev:chrome",
+    "build": "npm run build:chrome",
+    "build:chrome": "gulp pack --production --vendor=chrome",
+    "build:firefox": "gulp pack --production --vendor=firefox",
+    "build:opera": "gulp pack --production --vendor=opera",
+    "build:edge": "gulp pack --production --vendor=edge",
+    "dev": "npm run dev:chrome",
+    "dev:chrome": "gulp --watch --vendor=chrome",
+    "dev:firefox": "gulp --watch --vendor=firefox",
+    "dev:opera": "gulp --watch --vendor=opera",
+    "dev:edge": "gulp --watch --vendor=edge",
+    "lint": "standard"
+  },
+  "standard": {
+    "globals": [
+      "chrome"
+    ]
+  },
+  "devDependencies": {
+    "@types/chrome": "0.0.70",
+    "babel-cli": "6.x.x",
+    "babel-core": "6.x.x",
+    "babel-loader": "^7.1.5",
+    "babel-minify": "^0.4.3",
+    "babel-preset-env": "1.x.x",
+    "chai": "4.x.x",
+    "chromereload": "0.x.x",
+    "debounce": "1.x.x",
+    "del": "3.x.x",
+    "gulp": "3.x.x",
+    "gulp-bump": "2.x.x",
+    "gulp-cache": "0.x.x",
+    "gulp-clean-css": "^3.x.x",
+    "gulp-filter": "^5.x.x",
+    "gulp-git": "^2.x.x",
+    "gulp-if": "2.x.x",
+    "gulp-imagemin": "3.x.x",
+    "gulp-json-transform": "0.x.x",
+    "gulp-less": "3.x.x",
+    "gulp-livereload": "3.x.x",
+    "gulp-plumber": "1.x.x",
+    "gulp-sass": "^3.x.x",
+    "gulp-sequence": "0.x.x",
+    "gulp-sourcemaps": "^2.x.x",
+    "gulp-tag-version": "1.x.x",
+    "gulp-util": "3.x.x",
+    "gulp-zip": "^4.x.x",
+    "require-dir": "0.x.x",
+    "standard": "^10.0.2",
+    "ts-loader": "^2.x.x",
+    "tslint": "^5.11.0",
+    "typescript": "^2.9.2",
+    "uglifyjs-webpack-plugin": "^1.2.7",
+    "vinyl-named": "1.x.x",
+    "webpack": "^3.12.0",
+    "webpack-stream": "3.x.x",
+    "yargs": "^8.x.x"
+  },
+  "dependencies": {
+    "@octokit/rest": "^15.9.4",
+    "jquery": "^3.3.1"
+  }
+}

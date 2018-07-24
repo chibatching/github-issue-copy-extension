@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8"/>
+  <title>Popup</title>
+  <link rel="stylesheet" type="text/css" href="../styles/popup.css">
+</head>
+<body>
+
+<h2>Copy github issue</h2>
+
+<h3>Original</h3>
+<p id="title">title</p>
+
+<div id="form_block" hidden>
+  <h3>Destination</h3>
+  <p>Owner: <input type="text" id="owner" title="Owner"/></p>
+  <p>Repository: <input type="text" id="repository" title="Repository"/></p>
+  <p>Add reference to original issue: <input type="checkbox" checked id="add_reference" title="Add reference"/></p>
+  <p>Copy description: <input type="checkbox" id="copy_description" title="Copy description"/></p>
+  <input type="submit" id="button" value="Copy">
+</div>
+<script src="../scripts/popup.js"></script>
+</body>
+</html>
