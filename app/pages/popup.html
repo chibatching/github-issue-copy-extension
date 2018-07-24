@@ -1,25 +1,73 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <meta charset="utf-8"/>
-  <title>Popup</title>
-  <link rel="stylesheet" type="text/css" href="../styles/popup.css">
+    <meta charset="utf-8"/>
+    <title>Popup</title>
+    <link rel="stylesheet" type="text/css" href="../styles/popup.css">
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500" rel="stylesheet">
 </head>
-<body>
+<body class="mdc-typography">
+<header class="gic-header mdc-top-app-bar mdc-top-app-bar--fixed">
+    <div class="mdc-top-app-bar__row">
+        <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-start">
+            <span class="mdc-top-app-bar__title">Copy github issue</span>
+        </section>
+    </div>
+</header>
+<div class="mdc-top-app-bar--fixed-adjust"></div>
+<main>
+    <section>
+        <h3 class="mdc-typography--headline6">Original issue</h3>
+        <p id="title" class="mdc-typography--body1"></p>
+    </section>
+    <section>
+        <div id="form_block" hidden>
+            <h3 class="mdc-typography--headline6">Destination</h3>
+            <div id="repository" class="gic-text-field mdc-text-field mdc-text-field--dense mdc-text-field--box"
+                 aria-required="true">
+                <input type="text" id="repository-input" title="Repository" class="mdc-text-field__input" required
+                       pattern=".+\/.+"/>
+                <label for="repository" class="mdc-floating-label">Repository</label>
+                <div class="mdc-line-ripple"></div>
+            </div>
+            <p class="mdc-text-field-helper-text mdc-text-field-helper-text--persistent" style="display: block;">
+                e.g) chibatching/github-issue-copy-extension
+            </p>
+            <div class="mdc-form-field">
+                <div class="gic-checkbox mdc-checkbox">
+                    <input type="checkbox" checked id="add_reference" title="Add reference"
+                           class="mdc-checkbox__native-control"/>
+                    <div class="mdc-checkbox__background">
+                        <svg class="mdc-checkbox__checkmark" viewBox="0 0 24 24">
+                            <path class="mdc-checkbox__checkmark-path"
+                                  fill="none"
+                                  d="M1.73,12.91 8.1,19.28 22.79,4.59"></path>
+                        </svg>
+                        <div class="mdc-checkbox__mixedmark"></div>
+                    </div>
+                </div>
+                <label for="add_reference">Add reference to original issue</label>
+            </div>
+            <div class="mdc-form-field">
+                <div class="gic-checkbox mdc-checkbox">
+                    <input type="checkbox" checked id="copy_description" title="Copy description"
+                           class="mdc-checkbox__native-control"/>
+                    <div class="mdc-checkbox__background">
+                        <svg class="mdc-checkbox__checkmark" viewBox="0 0 24 24">
+                            <path class="mdc-checkbox__checkmark-path"
+                                  fill="none"
+                                  d="M1.73,12.91 8.1,19.28 22.79,4.59"></path>
+                        </svg>
+                        <div class="mdc-checkbox__mixedmark"></div>
+                    </div>
+                </div>
+                <label for="copy_description">Copy description</label>
+            </div>
 
-<h2>Copy github issue</h2>
-
-<h3>Original</h3>
-<p id="title">title</p>
-
-<div id="form_block" hidden>
-  <h3>Destination</h3>
-  <p>Owner: <input type="text" id="owner" title="Owner"/></p>
-  <p>Repository: <input type="text" id="repository" title="Repository"/></p>
-  <p>Add reference to original issue: <input type="checkbox" checked id="add_reference" title="Add reference"/></p>
-  <p>Copy description: <input type="checkbox" id="copy_description" title="Copy description"/></p>
-  <input type="submit" id="button" value="Copy">
-</div>
+            <button id="button" class="gic-button mdc-button mdc-button--raised">Copy</button>
+        </div>
+    </section>
+</main>
 <script src="../scripts/popup.js"></script>
 </body>
 </html>
