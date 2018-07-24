@@ -1,5 +1,8 @@
 import * as Octokit from '@octokit/rest';
 import * as $ from 'jquery';
+import {MDCTextField} from '@material/textfield';
+import {MDCTopAppBar} from '@material/top-app-bar';
+import {MDCRipple} from '@material/ripple';
 
 const octokit = new Octokit();
 let originalIssue: Issue;
@@ -18,11 +21,14 @@ chrome.storage.local.get('token', items => {
 
 $('#button').get(0).onclick = createIssue;
 
+MDCTopAppBar.attachTo(document.querySelector('.mdc-top-app-bar')!);
+MDCRipple.attachTo(document.querySelector('.mdc-button')!);
+const repoField = MDCTextField.attachTo(document.querySelector('#repository')!);
+
 chrome.storage.local.get('form', (items => {
   let form = items.form as FormSettings;
   if (form) {
-    $('#owner').val(form.owner);
-    $('#repository').val(form.repo);
+    repoField.value = form.repo;
     $('#add_reference').prop('checked', form.addReference);
     $('#copy_description').prop('checked', form.copyDescription);
   }
@@ -61,8 +67,7 @@ function getIssue(owner: string, repo: string, issueNumber: number): Promise<Iss
 
 function createIssue() {
   const formSetting = new FormSettings(
-    $('#owner').val(),
-    $('#repository').val(),
+    repoField.value,
     $('#add_reference').prop('checked'),
     $('#copy_description').prop('checked')
   );
@@ -79,10 +84,12 @@ function createIssue() {
     form: formSetting
   });
 
+  let repo = formSetting.repo.split('/');
+
   octokit.issues.create({
     title: originalIssue.title,
-    owner: formSetting.owner,
-    repo: formSetting.repo,
+    owner: repo[0],
+    repo: repo[1],
     body: body
   }).then(({data, headers, status}) => {
     window.open(data.html_url);
@@ -97,13 +104,11 @@ interface Issue {
 }
 
 class FormSettings {
-  owner: string;
   repo: string;
   addReference: boolean;
   copyDescription: boolean;
 
-  constructor(owner: string, repo: string, addReference: boolean, copyDescription: boolean) {
-    this.owner = owner;
+  constructor(repo: string, addReference: boolean, copyDescription: boolean) {
     this.repo = repo;
     this.addReference = addReference;
     this.copyDescription = copyDescription;

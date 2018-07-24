@@ -1,6 +1,9 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 var Octokit = require("@octokit/rest");
 var $ = require("jquery");
+var textfield_1 = require("@material/textfield");
+var top_app_bar_1 = require("@material/top-app-bar");
+var ripple_1 = require("@material/ripple");
 var octokit = new Octokit();
 var originalIssue;
 chrome.storage.local.get('token', function (items) {
@@ -16,11 +19,13 @@ chrome.storage.local.get('token', function (items) {
     }
 });
 $('#button').get(0).onclick = createIssue;
+top_app_bar_1.MDCTopAppBar.attachTo(document.querySelector('.mdc-top-app-bar'));
+ripple_1.MDCRipple.attachTo(document.querySelector('.mdc-button'));
+var repoField = textfield_1.MDCTextField.attachTo(document.querySelector('#repository'));
 chrome.storage.local.get('form', (function (items) {
     var form = items.form;
     if (form) {
-        $('#owner').val(form.owner);
-        $('#repository').val(form.repo);
+        repoField.value = form.repo;
         $('#add_reference').prop('checked', form.addReference);
         $('#copy_description').prop('checked', form.copyDescription);
     }
@@ -56,7 +61,7 @@ function getIssue(owner, repo, issueNumber) {
     });
 }
 function createIssue() {
-    var formSetting = new FormSettings($('#owner').val(), $('#repository').val(), $('#add_reference').prop('checked'), $('#copy_description').prop('checked'));
+    var formSetting = new FormSettings(repoField.value, $('#add_reference').prop('checked'), $('#copy_description').prop('checked'));
     var body = '';
     if (formSetting.addReference) {
         body += "ref: " + originalIssue.html_url + "\n\n";
@@ -67,10 +72,11 @@ function createIssue() {
     chrome.storage.local.set({
         form: formSetting
     });
+    var repo = formSetting.repo.split('/');
     octokit.issues.create({
         title: originalIssue.title,
-        owner: formSetting.owner,
-        repo: formSetting.repo,
+        owner: repo[0],
+        repo: repo[1],
         body: body
     }).then(function (_a) {
         var data = _a.data, headers = _a.headers, status = _a.status;
@@ -78,8 +84,7 @@ function createIssue() {
     });
 }
 var FormSettings = /** @class */ (function () {
-    function FormSettings(owner, repo, addReference, copyDescription) {
-        this.owner = owner;
+    function FormSettings(repo, addReference, copyDescription) {
         this.repo = repo;
         this.addReference = addReference;
         this.copyDescription = copyDescription;

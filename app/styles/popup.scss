@@ -1,3 +1,61 @@
+@import '@material/button/mdc-button';
+@import '@material/button/mixins';
+@import '@material/button/variables';
+@import '@material/checkbox/mdc-checkbox';
+@import '@material/checkbox/mixins';
+@import '@material/checkbox/variables';
+@import '@material/ripple/mixins';
+@import '@material/textfield/mdc-text-field';
+@import '@material/notched-outline/mdc-notched-outline';
+@import '@material/form-field/mdc-form-field';
+@import '@material/theme/color-palette';
+@import '@material/top-app-bar/mdc-top-app-bar';
+@import '@material/typography/mdc-typography';
+
 body {
-  min-width: 300px;
+  font-family: Roboto, sans-serif;
+  min-width: 360px;
+}
+
+$primary: $material-color-teal-700;
+$secondary: $material-color-teal-300;
+$secondary-lite: #82e9de;
+$text-on-p: #ffffff;
+$text-on-s: #fafafa;
+
+.gic-header {
+  margin-left: -8px;
+  margin-top: -8px;
+  @include mdc-top-app-bar-fill-color($primary);
+  @include mdc-top-app-bar-ink-color($text-on-p);
+}
+
+.gic-button {
+  margin-top: 16px;
+  display: block;
+  @include mdc-button-container-fill-color($secondary);
+  @include mdc-button-ink-color($text-on-s);
+  @include mdc-states($secondary);
+}
+
+.gic-checkbox {
+  @include mdc-checkbox-ink-color($text-on-s);
+  @include mdc-states($secondary);
+  @include mdc-checkbox-container-colors(
+    $unmarked-stroke-color: $secondary,
+    $unmarked-fill-color: transparent,
+    $marked-fill-color: $secondary);
+}
+
+.gic-text-field {
+  width: 240px;
+}
+
+.gic-text-field:not(.mdc-text-field--invalid) {
+  @include mdc-text-field-caret-color($secondary-lite);
+  @include mdc-text-field-bottom-line-color($secondary-lite);
+  @include mdc-text-field-line-ripple-color($secondary);
+  &.mdc-text-field--focused {
+    @include mdc-text-field-label-color($secondary);
+  }
 }
