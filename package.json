@@ -1,7 +1,7 @@
 {
   "name": "github_issue_copy_extension",
   "private": true,
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Copy github issue to another repository",
   "scripts": {
     "start": "npm run dev:chrome",
