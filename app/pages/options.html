@@ -1,21 +1,35 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <meta charset="utf-8"/>
-  <title>Options</title>
-  <link rel="stylesheet" type="text/css" href="../styles/options.css">
+    <meta charset="utf-8"/>
+    <title>Options</title>
+    <link rel="stylesheet" type="text/css" href="../styles/options.css">
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500" rel="stylesheet">
 </head>
 <body>
-
-<label>
-  <p>
-    Access token: <input type="text" id="token"/>
-  </p>
-  <p>
-    <input type="submit" id="button" value="Save">
-  </p>
-</label>
-
+<header class="gic-header mdc-top-app-bar mdc-top-app-bar--fixed">
+    <div class="mdc-top-app-bar__row">
+        <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-start">
+            <span class="mdc-top-app-bar__title">Options for Copy github issue </span>
+        </section>
+    </div>
+</header>
+<div class="mdc-top-app-bar--fixed-adjust"></div>
+<main>
+    <section class="page-section">
+        <h3 class="mdc-typography--headline6">Authentication</h3>
+        <div id="token" class="gic-text-field long-text-field mdc-text-field mdc-text-field--dense mdc-text-field--box"
+             aria-required="true">
+            <input type="text" id="token-input" title="Access Token" class="mdc-text-field__input" required minlength="40"/>
+            <label for="token" class="mdc-floating-label">Access Token</label>
+            <div class="mdc-line-ripple"></div>
+        </div>
+        <p class="mdc-text-field-helper-text mdc-text-field-helper-text--persistent" style="display: block;">
+            * Get access token from <a href="https://github.com/settings/tokens" target="_blank">here</a>.
+        </p>
+        <button id="button" class="gic-button mdc-button mdc-button--raised">Save</button>
+    </section>
+</main>
 <script src="../scripts/options.js"></script>
 </body>
 </html>
