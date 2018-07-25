@@ -33,9 +33,9 @@
             <p class="mdc-text-field-helper-text mdc-text-field-helper-text--persistent" style="display: block;">
                 e.g) chibatching/github-issue-copy-extension
             </p>
-            <div class="mdc-form-field">
-                <div class="gic-checkbox mdc-checkbox">
-                    <input type="checkbox" checked id="add_reference" title="Add reference"
+            <div id="add_reference_field" class="mdc-form-field">
+                <div id="add_reference" class="gic-checkbox mdc-checkbox">
+                    <input type="checkbox" checked id="add_reference_checkbox" title="Add reference"
                            class="mdc-checkbox__native-control"/>
                     <div class="mdc-checkbox__background">
                         <svg class="mdc-checkbox__checkmark" viewBox="0 0 24 24">
@@ -46,11 +46,11 @@
                         <div class="mdc-checkbox__mixedmark"></div>
                     </div>
                 </div>
-                <label for="add_reference">Add reference to original issue</label>
+                <label for="add_reference_checkbox">Add reference to original issue</label>
             </div>
-            <div class="mdc-form-field">
-                <div class="gic-checkbox mdc-checkbox">
-                    <input type="checkbox" checked id="copy_description" title="Copy description"
+            <div id="copy_description_field" class="mdc-form-field">
+                <div id="copy_description" class="gic-checkbox mdc-checkbox">
+                    <input type="checkbox" id="copy_description_checkbox" title="Copy description"
                            class="mdc-checkbox__native-control"/>
                     <div class="mdc-checkbox__background">
                         <svg class="mdc-checkbox__checkmark" viewBox="0 0 24 24">
@@ -61,7 +61,7 @@
                         <div class="mdc-checkbox__mixedmark"></div>
                     </div>
                 </div>
-                <label for="copy_description">Copy description</label>
+                <label for="copy_description_checkbox">Copy description</label>
             </div>
 
             <button id="button" class="gic-button mdc-button mdc-button--raised">Copy</button>

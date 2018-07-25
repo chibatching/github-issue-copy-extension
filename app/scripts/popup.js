@@ -4,6 +4,8 @@ var $ = require("jquery");
 var textfield_1 = require("@material/textfield");
 var top_app_bar_1 = require("@material/top-app-bar");
 var ripple_1 = require("@material/ripple");
+var form_field_1 = require("@material/form-field");
+var checkbox_1 = require("@material/checkbox");
 var octokit = new Octokit();
 var originalIssue;
 chrome.storage.local.get('token', function (items) {
@@ -22,12 +24,16 @@ $('#button').get(0).onclick = createIssue;
 top_app_bar_1.MDCTopAppBar.attachTo(document.querySelector('.mdc-top-app-bar'));
 ripple_1.MDCRipple.attachTo(document.querySelector('.mdc-button'));
 var repoField = textfield_1.MDCTextField.attachTo(document.querySelector('#repository'));
+var addReferenceCheckbox = checkbox_1.MDCCheckbox.attachTo(document.querySelector('#add_reference'));
+form_field_1.MDCFormField.attachTo(document.querySelector('#add_reference_field')).input = addReferenceCheckbox;
+var copyDescriptionCheckbox = checkbox_1.MDCCheckbox.attachTo(document.querySelector('#copy_description'));
+form_field_1.MDCFormField.attachTo(document.querySelector('#copy_description_field')).input = copyDescriptionCheckbox;
 chrome.storage.local.get('form', (function (items) {
     var form = items.form;
     if (form) {
         repoField.value = form.repo;
-        $('#add_reference').prop('checked', form.addReference);
-        $('#copy_description').prop('checked', form.copyDescription);
+        addReferenceCheckbox.checked = form.addReference;
+        copyDescriptionCheckbox.checked = form.copyDescription;
     }
 }));
 chrome.tabs.query({
@@ -61,7 +67,7 @@ function getIssue(owner, repo, issueNumber) {
     });
 }
 function createIssue() {
-    var formSetting = new FormSettings(repoField.value, $('#add_reference').prop('checked'), $('#copy_description').prop('checked'));
+    var formSetting = new FormSettings(repoField.value, addReferenceCheckbox.checked, copyDescriptionCheckbox.checked);
     var body = '';
     if (formSetting.addReference) {
         body += "ref: " + originalIssue.html_url + "\n\n";
