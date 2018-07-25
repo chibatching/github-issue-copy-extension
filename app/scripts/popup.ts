@@ -3,6 +3,8 @@ import * as $ from 'jquery';
 import {MDCTextField} from '@material/textfield';
 import {MDCTopAppBar} from '@material/top-app-bar';
 import {MDCRipple} from '@material/ripple';
+import {MDCFormField} from '@material/form-field';
+import {MDCCheckbox} from '@material/checkbox';
 
 const octokit = new Octokit();
 let originalIssue: Issue;
@@ -23,14 +25,19 @@ $('#button').get(0).onclick = createIssue;
 
 MDCTopAppBar.attachTo(document.querySelector('.mdc-top-app-bar')!);
 MDCRipple.attachTo(document.querySelector('.mdc-button')!);
+
 const repoField = MDCTextField.attachTo(document.querySelector('#repository')!);
+const addReferenceCheckbox = MDCCheckbox.attachTo(document.querySelector('#add_reference')!);
+MDCFormField.attachTo(document.querySelector('#add_reference_field')!).input = addReferenceCheckbox;
+const copyDescriptionCheckbox = MDCCheckbox.attachTo(document.querySelector('#copy_description')!);
+MDCFormField.attachTo(document.querySelector('#copy_description_field')!).input = copyDescriptionCheckbox;
 
 chrome.storage.local.get('form', (items => {
   let form = items.form as FormSettings;
   if (form) {
     repoField.value = form.repo;
-    $('#add_reference').prop('checked', form.addReference);
-    $('#copy_description').prop('checked', form.copyDescription);
+    addReferenceCheckbox.checked = form.addReference;
+    copyDescriptionCheckbox.checked = form.copyDescription;
   }
 }));
 
@@ -68,8 +75,8 @@ function getIssue(owner: string, repo: string, issueNumber: number): Promise<Iss
 function createIssue() {
   const formSetting = new FormSettings(
     repoField.value,
-    $('#add_reference').prop('checked'),
-    $('#copy_description').prop('checked')
+    addReferenceCheckbox.checked,
+    copyDescriptionCheckbox.checked
   );
 
   let body = '';
