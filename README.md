@@ -2,24 +2,28 @@
 
 Copy github issue to other repository
 
-## Installation
+![](https://github.com/chibatching/github-issue-copy-extension/raw/master/images/animation.gif)
+
+## Development
+
+### Installation
 
 	$ npm install
 
-## Usage
+### Usage
 
 Run `$ gulp --watch` and load the `dist`-directory into chrome.
 
-## Entryfiles (bundles)
+### Entryfiles (bundles)
 
 There are two kinds of entryfiles that create bundles.
 
 1. All ts-files in the root of the `./app/scripts` directory
 2. All css-,scss- and less-files in the root of the `./app/styles` directory
 
-## Tasks
+### Tasks
 
-### Build
+#### Build
 
     $ gulp
 
@@ -33,13 +37,13 @@ There are two kinds of entryfiles that create bundles.
 | `--sourcemaps` | Force the creation of sourcemaps. Default: !production                                                                                                |
 
 
-### pack
+#### pack
 
 Zips your `dist` directory and saves it in the `packages` directory.
 
     $ gulp pack --vendor=firefox
 
-### Version
+#### Version
 
 Increments version number of `manifest.json` and `package.json`,
 commits the change to git and adds a git tag.
@@ -56,7 +60,7 @@ or
     $ gulp release    // => X.0.0
 
 
-## Globals
+### Globals
 
 The build tool also defines a variable named `process.env.NODE_ENV` in your scripts. It will be set to `development` unless you use the `--production` option.
 
