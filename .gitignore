@@ -8,3 +8,4 @@ dist/
 packages/
 
 .idea
+app/scripts/*.js
