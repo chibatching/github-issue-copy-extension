@@ -43,24 +43,15 @@ var form_field_1 = require("@material/form-field");
 var checkbox_1 = require("@material/checkbox");
 var octokit = new Octokit({
     auth: function () {
-        return __awaiter(this, void 0, void 0, function () {
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0: return [4 /*yield*/, (function () {
-                            return new Promise(function (resolve, reject) {
-                                chrome.storage.local.get('token', function (items) {
-                                    var token = items.token;
-                                    if (token) {
-                                        resolve(token);
-                                    }
-                                    else {
-                                        chrome.runtime.openOptionsPage();
-                                        reject();
-                                    }
-                                });
-                            });
-                        })()];
-                    case 1: return [2 /*return*/, _a.sent()];
+        return new Promise(function (resolve, reject) {
+            chrome.storage.local.get('token', function (items) {
+                var token = items.token;
+                if (token) {
+                    resolve("token " + token);
+                }
+                else {
+                    chrome.runtime.openOptionsPage();
+                    reject();
                 }
             });
         });

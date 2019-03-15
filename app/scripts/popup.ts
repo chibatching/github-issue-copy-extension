@@ -7,19 +7,18 @@ import {MDCFormField} from '@material/form-field';
 import {MDCCheckbox} from '@material/checkbox';
 
 const octokit = new Octokit({
-  async auth() {
-    return await (() =>
-      new Promise((resolve, reject) => {
-        chrome.storage.local.get('token', items => {
-          const token = items.token as string;
-          if (token) {
-            resolve(token);
-          } else {
-            chrome.runtime.openOptionsPage();
-            reject();
-          }
-        });
-      }))() as string;
+  auth() {
+    return new Promise((resolve, reject) => {
+      chrome.storage.local.get('token', items => {
+        const token = items.token as string;
+        if (token) {
+          resolve(`token ${token}`);
+        } else {
+          chrome.runtime.openOptionsPage();
+          reject();
+        }
+      });
+    });
   }
 });
 let originalIssue: Issue;
