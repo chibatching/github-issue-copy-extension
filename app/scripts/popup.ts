@@ -6,20 +6,23 @@ import {MDCRipple} from '@material/ripple';
 import {MDCFormField} from '@material/form-field';
 import {MDCCheckbox} from '@material/checkbox';
 
-const octokit = new Octokit();
-let originalIssue: Issue;
-
-chrome.storage.local.get('token', items => {
-  let token = items.token as string;
-  if (token) {
-    octokit.authenticate({
-      type: 'token',
-      token: token
-    });
-  } else {
-    chrome.runtime.openOptionsPage();
+const octokit = new Octokit({
+  async auth() {
+    return await (() =>
+      new Promise((resolve, reject) => {
+        chrome.storage.local.get('token', items => {
+          const token = items.token as string;
+          if (token) {
+            resolve(token);
+          } else {
+            chrome.runtime.openOptionsPage();
+            reject();
+          }
+        });
+      }))() as string;
   }
 });
+let originalIssue: Issue;
 
 $('#button').get(0).onclick = createIssue;
 
