@@ -66,12 +66,15 @@ var addReferenceCheckbox = checkbox_1.MDCCheckbox.attachTo(document.querySelecto
 form_field_1.MDCFormField.attachTo(document.querySelector('#add_reference_field')).input = addReferenceCheckbox;
 var copyDescriptionCheckbox = checkbox_1.MDCCheckbox.attachTo(document.querySelector('#copy_description'));
 form_field_1.MDCFormField.attachTo(document.querySelector('#copy_description_field')).input = copyDescriptionCheckbox;
+var assingSelfCheckbox = checkbox_1.MDCCheckbox.attachTo(document.querySelector('#self_assign'));
+form_field_1.MDCFormField.attachTo(document.querySelector('#self_assign_field')).input = assingSelfCheckbox;
 chrome.storage.local.get('form', (function (items) {
     var form = items.form;
     if (form) {
         repoField.value = form.repo;
         addReferenceCheckbox.checked = form.addReference;
         copyDescriptionCheckbox.checked = form.copyDescription;
+        assingSelfCheckbox.checked = form.assignSelf;
     }
 }));
 chrome.tabs.query({
@@ -105,33 +108,59 @@ function getIssue(owner, repo, issueNumber) {
     });
 }
 function createIssue() {
-    var formSetting = new FormSettings(repoField.value, addReferenceCheckbox.checked, copyDescriptionCheckbox.checked);
-    var body = '';
-    if (formSetting.addReference) {
-        body += "ref: " + originalIssue.html_url + "\n\n";
-    }
-    if (formSetting.copyDescription) {
-        body += originalIssue.body;
-    }
-    chrome.storage.local.set({
-        form: formSetting
-    });
-    var repo = formSetting.repo.split('/');
-    octokit.issues.create({
-        title: originalIssue.title,
-        owner: repo[0],
-        repo: repo[1],
-        body: body
-    }).then(function (_a) {
-        var data = _a.data, headers = _a.headers, status = _a.status;
-        window.open(data.html_url);
+    return __awaiter(this, void 0, void 0, function () {
+        var formSetting, body, assignee, repo, response, e_1;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    formSetting = new FormSettings(repoField.value, addReferenceCheckbox.checked, copyDescriptionCheckbox.checked, assingSelfCheckbox.checked);
+                    body = '';
+                    if (formSetting.addReference) {
+                        body += "ref: " + originalIssue.html_url + "\n\n";
+                    }
+                    if (formSetting.copyDescription) {
+                        body += originalIssue.body;
+                    }
+                    assignee = undefined;
+                    if (!formSetting.assignSelf) return [3 /*break*/, 2];
+                    return [4 /*yield*/, octokit.users.getAuthenticated()];
+                case 1:
+                    assignee = [(_a.sent()).data.login];
+                    _a.label = 2;
+                case 2:
+                    chrome.storage.local.set({
+                        form: formSetting
+                    });
+                    repo = formSetting.repo.split('/');
+                    _a.label = 3;
+                case 3:
+                    _a.trys.push([3, 5, , 6]);
+                    return [4 /*yield*/, octokit.issues.create({
+                            title: originalIssue.title,
+                            owner: repo[0],
+                            repo: repo[1],
+                            body: body,
+                            assignees: assignee
+                        })];
+                case 4:
+                    response = _a.sent();
+                    window.open(response.data.html_url);
+                    return [3 /*break*/, 6];
+                case 5:
+                    e_1 = _a.sent();
+                    console.error(e_1);
+                    return [3 /*break*/, 6];
+                case 6: return [2 /*return*/];
+            }
+        });
     });
 }
 var FormSettings = /** @class */ (function () {
-    function FormSettings(repo, addReference, copyDescription) {
+    function FormSettings(repo, addReference, copyDescription, assignSelf) {
         this.repo = repo;
         this.addReference = addReference;
         this.copyDescription = copyDescription;
+        this.assignSelf = assignSelf;
     }
     return FormSettings;
 }());

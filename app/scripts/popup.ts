@@ -5,6 +5,7 @@ import {MDCTopAppBar} from '@material/top-app-bar';
 import {MDCRipple} from '@material/ripple';
 import {MDCFormField} from '@material/form-field';
 import {MDCCheckbox} from '@material/checkbox';
+import {UsersGetByUsernameResponse} from '@octokit/rest';
 
 const octokit = new Octokit({
   auth() {
@@ -33,6 +34,8 @@ const addReferenceCheckbox = MDCCheckbox.attachTo(document.querySelector('#add_r
 MDCFormField.attachTo(document.querySelector('#add_reference_field')!).input = addReferenceCheckbox;
 const copyDescriptionCheckbox = MDCCheckbox.attachTo(document.querySelector('#copy_description')!);
 MDCFormField.attachTo(document.querySelector('#copy_description_field')!).input = copyDescriptionCheckbox;
+const assingSelfCheckbox = MDCCheckbox.attachTo(document.querySelector('#self_assign')!);
+MDCFormField.attachTo(document.querySelector('#self_assign_field')!).input = assingSelfCheckbox;
 
 chrome.storage.local.get('form', (items => {
   let form = items.form as FormSettings;
@@ -40,6 +43,7 @@ chrome.storage.local.get('form', (items => {
     repoField.value = form.repo;
     addReferenceCheckbox.checked = form.addReference;
     copyDescriptionCheckbox.checked = form.copyDescription;
+    assingSelfCheckbox.checked = form.assignSelf;
   }
 }));
 
@@ -74,11 +78,12 @@ function getIssue(owner: string, repo: string, issueNumber: number): Promise<Iss
   });
 }
 
-function createIssue() {
+async function createIssue() {
   const formSetting = new FormSettings(
     repoField.value,
     addReferenceCheckbox.checked,
-    copyDescriptionCheckbox.checked
+    copyDescriptionCheckbox.checked,
+    assingSelfCheckbox.checked
   );
 
   let body = '';
@@ -88,6 +93,10 @@ function createIssue() {
   if (formSetting.copyDescription) {
     body += originalIssue.body;
   }
+  let assignee: string[] | undefined = undefined;
+  if (formSetting.assignSelf) {
+    assignee = [((await octokit.users.getAuthenticated()).data as UsersGetByUsernameResponse).login];
+  }
 
   chrome.storage.local.set({
     form: formSetting
@@ -95,14 +104,18 @@ function createIssue() {
 
   let repo = formSetting.repo.split('/');
 
-  octokit.issues.create({
-    title: originalIssue.title,
-    owner: repo[0],
-    repo: repo[1],
-    body: body
-  }).then(({data, headers, status}) => {
-    window.open(data.html_url);
-  });
+  try {
+    const response = await octokit.issues.create({
+      title: originalIssue.title,
+      owner: repo[0],
+      repo: repo[1],
+      body: body,
+      assignees: assignee
+    });
+    window.open(response.data.html_url);
+  } catch (e) {
+    console.error(e);
+  }
 }
 
 interface Issue {
@@ -116,10 +129,12 @@ class FormSettings {
   repo: string;
   addReference: boolean;
   copyDescription: boolean;
+  assignSelf: boolean;
 
-  constructor(repo: string, addReference: boolean, copyDescription: boolean) {
+  constructor(repo: string, addReference: boolean, copyDescription: boolean, assignSelf: boolean) {
     this.repo = repo;
     this.addReference = addReference;
     this.copyDescription = copyDescription;
+    this.assignSelf = assignSelf;
   }
 }
