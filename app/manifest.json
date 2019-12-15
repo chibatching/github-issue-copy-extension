@@ -28,8 +28,7 @@
     "open_in_tab": true
   },
   "permissions": [
-    "activeTab",
-    "storage",
-    "<all_urls>"
+    "https://github.com/*/*/issues/*",
+    "storage"
   ]
 }
