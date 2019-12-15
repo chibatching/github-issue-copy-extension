@@ -1,22 +1,22 @@
 import gulp from 'gulp'
-import plumber from "gulp-plumber";
-import {colors, log} from "gulp-util";
-import jsonTransform from "gulp-json-transform";
-import applyBrowserPrefixesFor from "./lib/applyBrowserPrefixesFor";
-import args from "./lib/args";
-import gulpif from "gulp-if";
-import livereload from "gulp-livereload";
-import named from "vinyl-named";
-import gulpWebpack from "webpack-stream";
-import webpack from "webpack";
-import UglifyJsPlugin from "uglifyjs-webpack-plugin";
-import sourcemaps from "gulp-sourcemaps";
-import cleanCSS from "gulp-clean-css";
-import less from "gulp-less";
-import gutil from "gulp-util";
-import sass from "gulp-sass";
-import imagemin from "gulp-imagemin";
-import del from "del";
+import plumber from 'gulp-plumber'
+import { colors, log } from 'gulp-util'
+import jsonTransform from 'gulp-json-transform'
+import applyBrowserPrefixesFor from './lib/applyBrowserPrefixesFor'
+import args from './lib/args'
+import gulpif from 'gulp-if'
+import livereload from 'gulp-livereload'
+import named from 'vinyl-named'
+import gulpWebpack from 'webpack-stream'
+import webpack from 'webpack'
+import TerserPlugin from 'terser-webpack-plugin'
+import sourcemaps from 'gulp-sourcemaps'
+import cleanCSS from 'gulp-clean-css'
+import less from 'gulp-less'
+import gutil from 'gulp-util'
+import sass from 'gulp-sass'
+import imagemin from 'gulp-imagemin'
+import del from 'del'
 
 gulp.task('clean', () => {
   return del(`dist/${args.vendor}/**/*`)
@@ -46,7 +46,7 @@ gulp.task('scripts', (cb) => {
   return gulp.src(['app/scripts/*.js', 'app/scripts/*.ts'])
     .pipe(plumber({
       // Webpack will log the errors
-      errorHandler() {
+      errorHandler () {
       }
     }))
     .pipe(named())
@@ -59,7 +59,7 @@ gulp.task('scripts', (cb) => {
             'process.env.VENDOR': JSON.stringify(args.vendor)
           })
         ].concat(args.production ? [
-          new UglifyJsPlugin({uglifyOptions: {ecma: 6}}),
+          new TerserPlugin({ terserOptions: { ecma: 6 } }),
           new webpack.optimize.ModuleConcatenationPlugin()
         ] : []),
         module: {
@@ -93,7 +93,6 @@ gulp.task('scripts', (cb) => {
     .pipe(gulpif(args.watch, livereload()))
 })
 
-
 gulp.task('styles:css', function () {
   return gulp.src('app/styles/*.css')
     .pipe(gulpif(args.sourcemaps, sourcemaps.init()))
@@ -106,7 +105,7 @@ gulp.task('styles:css', function () {
 gulp.task('styles:less', function () {
   return gulp.src('app/styles/*.less')
     .pipe(gulpif(args.sourcemaps, sourcemaps.init()))
-    .pipe(less({paths: ['./app']}).on('error', function (error) {
+    .pipe(less({ paths: ['./app'] }).on('error', function (error) {
       gutil.log(gutil.colors.red('Error (' + error.plugin + '): ' + error.message))
       this.emit('end')
     }))
@@ -119,7 +118,7 @@ gulp.task('styles:less', function () {
 gulp.task('styles:sass', function () {
   return gulp.src('app/styles/*.scss')
     .pipe(gulpif(args.sourcemaps, sourcemaps.init()))
-    .pipe(sass({includePaths: ['./app', './node_modules']}).on('error', function (error) {
+    .pipe(sass({ includePaths: ['./app', './node_modules'] }).on('error', function (error) {
       gutil.log(gutil.colors.red('Error (' + error.plugin + '): ' + error.message))
       this.emit('end')
     }))
