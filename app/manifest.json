@@ -2,7 +2,7 @@
   "name": "Github issue copy extension",
   "short_name": "gh_issue_cp",
   "description": "Copy github issue to another repository",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "manifest_version": 2,
   "default_locale": "en",
   "icons": {
