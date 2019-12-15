@@ -28,7 +28,7 @@
     "open_in_tab": true
   },
   "permissions": [
-    "tabs",
+    "activeTab",
     "storage",
     "<all_urls>"
   ]
