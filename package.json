@@ -65,7 +65,7 @@
     "gulp-tag-version": "1.x.x",
     "gulp-util": "3.x.x",
     "gulp-zip": "^4.2.0",
-    "hawk": "^7.0.10",
+    "hawk": "^9.0.1",
     "jquery": "^3.5.0",
     "less": "^3.10.3",
     "node-gyp": "^3.8.0",
