@@ -38,7 +38,7 @@
     "@types/chrome": "0.0.70",
     "@types/material-components-web": "^0.35.0",
     "@types/node": "^11.15.3",
-    "babel-loader": "^7.1.5",
+    "babel-loader": "^9.1.0",
     "babel-minify": "^0.4.3",
     "babel-preset-env": "1.x.x",
     "body-parser": "^1.19.0",
@@ -73,12 +73,12 @@
     "require-dir": "0.x.x",
     "standard": "^10.0.2",
     "terser-webpack-plugin": "^2.3.0",
-    "ts-loader": "^4.x.x",
+    "ts-loader": "^9.x.x",
     "tslint": "^5.20.1",
     "typescript": "^3.7.3",
     "vinyl-named": "1.x.x",
-    "webpack": "^4.41.2",
-    "webpack-stream": "^5.2.1",
+    "webpack": "^5.75.0",
+    "webpack-stream": "^7.0.0",
     "yargs": "^15.0.2"
   }
 }
